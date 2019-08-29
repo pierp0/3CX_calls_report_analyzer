@@ -11,3 +11,8 @@ print(df[df['Tempo della Chimata'].isnull()])
 
 print(df[df['Tempo della Chimata'].notnull()].count())
 #print(df[df['Tempo della Chimata'].isnull()].count())
+
+# Crare report settimanale con:
+# Tot chiamate
+# Tot risposte  tot perse
+# Chiamate risposte da ogni operatore
