@@ -6,14 +6,17 @@ import pandas as pd
 class logfile():
 
 	def __init__(self, fp):
-		# self.basefile = actualFile
+		#self.basefile = actualFile
 		self.dfFile = pd.read_csv(fp, engine = 'python', header = 5, skipfooter = 2, usecols = ["Tempo della Chimata", "Caller ID", "Destinazione", "Stato", "Squillo", "Conversazione", "Totale", "Motivo"])
 		self._contentFile = ''
-		# self._restructurizeFile()
+		#self._restructurizeFile()
 		self._week = 0
 		self._totcalls = 0
 		self._missedcalls = 0
+		# Operators{'internal_number_0': 'operator_name_0', ... , 'internal_number_n': 'operator_name_n'} numb of answered calls
+		self._operators = {}
 		self._analyzeLog(fp)
+
 
 
 	def _analyzeLog(self, fp):
@@ -26,7 +29,8 @@ class logfile():
 		self._week = dt.date(data).isocalendar()[1]
 		dfFileNotNull = self.dfFile['Tempo della Chimata'].notnull()
 		self._totcalls = self.dfFile['Tempo della Chimata'].count()
-		#self._missedcalls = 0
+		# self._missedcalls = 0
+		# self._operators
 		
 
 	def _isDate(self, stringToAnalyze):
