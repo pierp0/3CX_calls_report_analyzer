@@ -1,0 +1,13 @@
+download  :
+  addr  : ''
+  port  : 0
+  usr   : ''
+  pwd   : ''
+
+send  :
+  addr  : ''
+  port  : 0
+  usr   : ''
+  pwd   : ''
+  saddr : ''
+  raddr : ''

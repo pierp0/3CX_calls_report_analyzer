@@ -1,50 +1,46 @@
 import imaplib
 import smtplib
-# import base64
+import urllib.request
+import base64
 
 
-def parseEmail(data):
-    pass
+def downloadFile(data):
+    linkIndex = data.find('here')
+    link = ''
+    urllib.request.urlretrieve(link, 'newdata.txt')
 
 
-def sendEmail():
-    addr = ''
-    port = 25
-    usr = ''
-    pwd = 'test123'
-    print('tento creazione server')
-    server = smtplib.SMTP(addr, port)
-    print('tento connessione')
-    server.login(usr, pwd)
-    print('login OK')
-    msg = 'this is a test'
-    server.sendmail('test@gmail.com', 'test@gmail.com', msg)
-    print('mail sent')
-    server.close()
-    # server.logout()
+def sendEmail(srvaddr='', port=25, usr='', pwd='', saddr='', raddr=''):
+    try:
+        server = smtplib.SMTP(srvaddr, port)
+        server.login(usr, pwd)
+        msg = 'this is a test'
+        server.sendmail(saddr, raddr, msg)
+        server.close()
+    except Exception as e:
+        raise e
 
 
-def downloadEmail():
-    usr = 'test@gov.it'
-    pwd = 'passwd'
-    addr = 'add'
-    port = '123'
+def downloadEmail(srvaddr='', port='', usr='', pwd=''):
+    try:
+        email = imaplib.IMAP4_SSL(srvaddr, port)
+        email.login(usr, pwd)
+        email.select()
 
-    email = imaplib.IMAP4_SSL(addr, port)
-    email.login(usr, pwd)
-    email.select()
+        typ, data = email.search(None, '(UNSEEN)')
 
-    typ, data = email.search(None, '(UNSEEN)')
+        for num in data[0].split():
+            typ, data = email.fetch(num, '(RFC822)')
+            print data
+            downloadFile(data)
+            num1 = base64.b64decode(num)
+            data1 = base64.b64decode(data[0][1])
+            print('MESSAGE %s\n%s\n' % (num1, data1))
 
-    for num in data[0].split():
-        typ, data = email.fetch(num, '(RFC822)')
-        parseEmail(data)
-        # num1 = base64.b64decode(num)
-        # data1 = base64.b64decode(data[0][1])
-        # print('MESSAGE %s\n%s\n' % (num, data1))
+        email.close()
+        email.logout()
+        return True
+    except Exception:
+        return False
 
-    email.close()
-    email.logout()
-
-
-sendEmail()
+# sendEmail()
