@@ -1,6 +1,7 @@
 from dateutil.parser import parse
 from datetime import datetime as dt
 import pandas as pd
+import plotandsavegraphic
 
 
 class logfile():
@@ -18,6 +19,10 @@ class logfile():
         self._operators = {}
         self._analyzeLog(fp)
 
+    def getPDF(self):
+        plot = plotandsavegraphic.plotandsave(self)
+        return plot.plot(self.week)
+
     def _analyzeLog(self, fp):
         with open(fp, 'r') as file:
             # Select the 3th row and get a substr with the start date
@@ -26,7 +31,7 @@ class logfile():
             # Convert substr into a date and use it to get the week number
             data = dt.strptime(file.readline()[24:-29].strip(), '%d/%m/%y')
         self._week = dt.date(data).isocalendar()[1]
-        dfFileNotNull = self.dfFile['Tempo della Chimata'].notnull()
+        # dfFileNotNull = self.dfFile['Tempo della Chimata'].notnull()
         self._totcalls = self.dfFile['Tempo della Chimata'].count()
         # self._missedcalls = 0
         # self._operators

@@ -4,6 +4,7 @@ import yaml
 import sys
 import termcolor
 import time
+import os
 
 
 def __getConfig(path='./'):
@@ -24,7 +25,7 @@ if __name__ == "__main__":
             path = emailAndParser.downloadEmail(conf['download']['addr'], conf['download']['port'], conf['download']['usr'], conf['download']['pwd'])
             if path:
                 lf = logfile.logfile(path)
-                # emailAndParser.sendEmail(conf['send']['addr'], conf['send']['port'], conf['send']['usr'], conf['send']['pwd'], conf['send']['saddr'], conf['send']['raddr'])
+                emailAndParser.sendEmail(lf.getPDF, conf['send']['addr'], conf['send']['port'], conf['send']['usr'], conf['send']['pwd'], conf['send']['saddr'], conf['send']['raddr'])
                 break
             else:
                 time.sleep(15)
@@ -36,18 +37,9 @@ if __name__ == "__main__":
         """, 'green'))
         fileList = os.listdir('./')
         for file in fileList:
-            if '' in file:
-
-
-
-
-
-
-
-
-
-        lf = logfile.logfile()
-
+            if '.csv' in file:
+                lf = logfile.logfile(os.path.join('./', file))
+                emailAndParser.sendEmail(lf.getPDF, conf['send']['addr'], conf['send']['port'], conf['send']['usr'], conf['send']['pwd'], conf['send']['saddr'], conf['send']['raddr'])
     else:
         print(termcolor.colored("""
         +----------------------------------------+
