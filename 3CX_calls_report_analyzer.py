@@ -1,20 +1,22 @@
 import emailAndParser
 import logfile
+import os
 import yaml
 import sys
 import termcolor
 import time
-import os
 
 
 def __getConfig(path='./'):
-    with open('./config.yml', 'r') as confFile:
+    with open(path, 'r') as confFile:
         conf = yaml.safe_load(confFile)
     return conf
 
 
 if __name__ == "__main__":
-    conf = __getConfig()
+
+    conf = __getConfig('config.yml')
+
     if len(sys.argv) == 1:
         print(termcolor.colored("""
         +----------------------------------------+
@@ -22,10 +24,24 @@ if __name__ == "__main__":
         +----------------------------------------+
         """, 'green'))
         while True:
-            path = emailAndParser.downloadEmail(conf['download']['addr'], conf['download']['port'], conf['download']['usr'], conf['download']['pwd'])
+            path = emailAndParser.downloadEmail(
+                    conf['download']['addr'],
+                    conf['download']['port'],
+                    conf['download']['usr'],
+                    conf['download']['pwd']
+            )
             if path:
                 lf = logfile.logfile(path)
-                emailAndParser.sendEmail(lf.getPDF, conf['send']['addr'], conf['send']['port'], conf['send']['usr'], conf['send']['pwd'], conf['send']['saddr'], conf['send']['raddr'])
+                filePath = lf.getPDF()
+                emailAndParser.sendEmail(
+                        filePath,
+                        conf['send']['addr'],
+                        conf['send']['port'],
+                        conf['send']['usr'],
+                        conf['send']['pwd'],
+                        conf['send']['saddr'],
+                        conf['send']['raddr']
+                )
                 break
             else:
                 time.sleep(15)
@@ -39,7 +55,16 @@ if __name__ == "__main__":
         for file in fileList:
             if '.csv' in file:
                 lf = logfile.logfile(os.path.join('./', file))
-                emailAndParser.sendEmail(lf.getPDF, conf['send']['addr'], conf['send']['port'], conf['send']['usr'], conf['send']['pwd'], conf['send']['saddr'], conf['send']['raddr'])
+                filePath = lf.getPDF()
+                emailAndParser.sendEmail(
+                        filePath,
+                        conf['send']['addr'],
+                        conf['send']['port'],
+                        conf['send']['usr'],
+                        conf['send']['pwd'],
+                        conf['send']['saddr'],
+                        conf['send']['raddr']
+                )
     else:
         print(termcolor.colored("""
         +----------------------------------------+

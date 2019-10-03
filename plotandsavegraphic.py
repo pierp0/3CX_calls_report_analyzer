@@ -35,7 +35,7 @@ class plotandsave():
         plt.yticks(np.arange(0, self._totcalls + 5, 5))
         plt.legend((p1[0], p2[0]), ('Men', 'Women'))
         # fig = plt.figure()
-        plt.show()
-        fullPath = os.path.join(path, filename)
+        # plt.show()
+        fullPath = os.path.join(path, str(filename))
         fig.savefig(fullPath)
-        return fullPath
+        return fullPath + '.png'

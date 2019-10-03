@@ -9,7 +9,13 @@ class logfile():
     def __init__(self, fp):
         # self.basefile = actualFile
         self.dfFile = pd.read_csv(fp, engine='python', header=5, skipfooter=2, usecols=[
-                                  "Tempo della Chimata", "Caller ID", "Destinazione", "Stato", "Squillo", "Conversazione", "Totale", "Motivo"])
+            "Tempo della Chimata",
+            "Caller ID", "Destinazione",
+            "Stato",
+            "Squillo",
+            "Conversazione",
+            "Totale",
+            "Motivo"])
         self._contentFile = ''
         # self._restructurizeFile()
         self._week = 0
@@ -20,10 +26,12 @@ class logfile():
         self._analyzeLog(fp)
 
     def getPDF(self):
+        # print('QUI get PDF\n\n\n\n\n\n\n\n')
         plot = plotandsavegraphic.plotandsave(self)
-        return plot.plot(self.week)
+        return plot.plot(self._week)
 
     def _analyzeLog(self, fp):
+        # print('QUI\n\n\n\n\n\n\n')
         with open(fp, 'r') as file:
             # Select the 3th row and get a substr with the start date
             next(file)
